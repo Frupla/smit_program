@@ -12,18 +12,32 @@ public class Complex {
 	public Complex(double mag, double ang){
 		magnitude = mag;
 		phase = ang*(Math.PI/180.0);
-		real = getReal();
-		imaginary = getImaginary();
-	}
+		real = magnitude*Math.cos(phase);
+		imaginary = magnitude*Math.sin(phase);
+	}	
 	private void updateMagAndPhase(){
 		magnitude = getMagnitude();
 		phase = getPhase();
 	}
+
+	public void setRealAndImaginary(double re, double im){
+		real = re;
+		imaginary = im;
+		magnitude = Math.sqrt(re*re+im*im);
+		phase = Math.atan2(im,re);
+	}
+
+	public void setMagnitude(double mag){
+		magnitude = mag;
+		real = magnitude*Math.cos(phase);
+		imaginary = magnitude*Math.sin(phase);
+	}
+
 	public double getReal(){
-		return magnitude*Math.cos(phase);
+		return real;
 	}
 	public double getImaginary(){
-		return magnitude*Math.sin(phase);
+		return imaginary;
 	}
 	public double getMagnitude(){
 		return magnitude;
@@ -42,7 +56,10 @@ public class Complex {
 		return new Complex(real + other.getReal(),imaginary + other.getImaginary());
 	}
 	public Complex times(Complex other){
-		return new Complex(real * other.getReal() - imaginary * other.getImaginary(),imaginary * other.getReal() + real * other.getImaginary());
+		return new Complex(magnitude*(other.magnitude),phase + (other.phase));
+	}
+	public Complex times(double other){
+		return new Complex(magnitude*other,getPhase());
 	}
 	public String toString(){
 		return real + "+" + imaginary + "i";
